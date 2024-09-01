@@ -26,7 +26,11 @@
 #define MOVEMENT_CUSTOM_ALARM_TUNES_H_
 
 int8_t *alarm_tunes[] = {
-    default_beep_long
+    default_beep_long,
+    fur_elise_tune,
+    bach_tune,
+    minuet_tune,
+    mario_long,
 };
 
 const uint8_t movement_custom_alarm_count = (uint8_t)(sizeof(alarm_tunes)/sizeof(alarm_tunes[0]));
