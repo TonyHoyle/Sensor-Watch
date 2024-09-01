@@ -65,7 +65,9 @@ of debounce time.
 #include "alt_fw/deep_space_now.h"
 #endif
 
+#include "movement_custom_tunes.h"
 #include "movement_custom_signal_tunes.h"
+#include "movement_custom_alarm_tunes.h"
 
 // Default to no secondary face behaviour.
 #ifndef MOVEMENT_SECONDARY_FACE_INDEX
@@ -375,15 +377,15 @@ static void set_initial_clock_mode(void) {
 #endif
 }
 
-void movement_play_signal(void) {
-    void *maybe_disable_buzzer = end_buzzing_and_disable_buzzer;
+static void play_tune(int8_t *tune) {
+    movement_state.maybe_disable_buzzer = end_buzzing_and_disable_buzzer;
     if (watch_is_buzzer_or_led_enabled()) {
-        maybe_disable_buzzer = end_buzzing;
+        movement_state.maybe_disable_buzzer = end_buzzing;
     } else {
         watch_enable_buzzer();
     }
     movement_state.is_buzzing = true;
-    watch_buzzer_play_sequence(signal_tune, maybe_disable_buzzer);
+    watch_buzzer_play_sequence(tune, movement_state.maybe_disable_buzzer);
     if (movement_state.le_mode_ticks == -1) {
         // the watch is asleep. wake it up for "1" round through the main loop.
         // the sleep_mode_app_loop will notice the is_buzzing and note that it
@@ -394,8 +396,16 @@ void movement_play_signal(void) {
     }
 }
 
+void movement_play_signal(void) {
+    play_tune(alarm_tunes[movement_state.settings.bit.signal_index]);
+}
+
 void movement_play_alarm(void) {
     movement_play_alarm_beeps(5, BUZZER_NOTE_C8);
+}
+
+void movement_play_alarm_tune(uint8_t tune) {
+    play_tune(alarm_tunes[tune]);
 }
 
 void movement_play_alarm_beeps(uint8_t rounds, BuzzerNote alarm_note) {
@@ -406,6 +416,14 @@ void movement_play_alarm_beeps(uint8_t rounds, BuzzerNote alarm_note) {
     // our tone is 0.375 seconds of beep and 0.625 of silence, repeated as given.
     movement_state.alarm_ticks = 128 * rounds - 75;
     _movement_enable_fast_tick_if_needed();
+}
+
+void movement_stop_alarm(void) {
+    watch_buzzer_abort_sequence();
+
+    if(movement_state.is_buzzing) {
+        movement_state.maybe_disable_buzzer();
+    }
 }
 
 uint8_t movement_claim_backup_register(void) {

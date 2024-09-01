@@ -22,17 +22,13 @@
  * SOFTWARE.
  */
 
-#ifndef MOVEMENT_CUSTOM_SIGNAL_TUNES_H_
-#define MOVEMENT_CUSTOM_SIGNAL_TUNES_H_
+#ifndef MOVEMENT_CUSTOM_ALARM_TUNES_H_
+#define MOVEMENT_CUSTOM_ALARM_TUNES_H_
 
-int8_t *signal_tunes[] = {
-    default_beep_short,
-    zelda_tune,
-    mario_tune,
-    kim_possible_tune
+int8_t *alarm_tunes[] = {
+    default_beep_long
 };
 
-
-const uint8_t movement_custom_signal_count = (uint8_t)(sizeof(signal_tunes)/sizeof(signal_tunes[0]));
+const uint8_t movement_custom_alarm_count = (uint8_t)(sizeof(alarm_tunes)/sizeof(alarm_tunes[0]));
 
 #endif // MOVEMENT_CUSTOM_SIGNAL_TUNES_H_

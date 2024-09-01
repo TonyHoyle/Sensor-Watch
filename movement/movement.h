@@ -62,7 +62,7 @@ typedef union {
         bool clock_mode_24h : 1;            // indicates whether clock should use 12 or 24 hour mode.
         bool use_imperial_units : 1;        // indicates whether to use metric units (the default) or imperial.
         bool alarm_enabled : 1;             // indicates whether there is at least one alarm enabled.
-        uint8_t reserved : 6;               // room for more preferences if needed.
+        uint8_t signal_index : 6;           // an integer representing an index into the signal table
     } bit;
     uint32_t reg;
 } movement_settings_t;
@@ -259,6 +259,7 @@ typedef struct {
     int16_t alarm_ticks;
     bool is_buzzing;
     BuzzerNote alarm_note;
+    void (*maybe_disable_buzzer)();
 
     // button tracking for long press
     uint16_t light_down_timestamp;
@@ -314,8 +315,13 @@ void movement_request_wake(void);
 
 void movement_play_signal(void);
 void movement_play_alarm(void);
+void movement_play_alarm_tune(uint8_t tune);
 void movement_play_alarm_beeps(uint8_t rounds, BuzzerNote alarm_note);
+void movement_stop_alarm(void);
 
 uint8_t movement_claim_backup_register(void);
+
+extern const uint8_t movement_custom_signal_count;
+extern const uint8_t movement_custom_alarm_count;
 
 #endif // MOVEMENT_H_
