@@ -26,7 +26,7 @@
 #include "preferences_face.h"
 #include "watch.h"
 
-#define PREFERENCES_FACE_NUM_PREFERENCES (7)
+#define PREFERENCES_FACE_NUM_PREFERENCES (8)
 const char preferences_face_titles[PREFERENCES_FACE_NUM_PREFERENCES][11] = {
     "CL        ",   // Clock: 12 or 24 hour
     "BT  Beep  ",   // Buttons: should they beep?
@@ -39,6 +39,7 @@ const char preferences_face_titles[PREFERENCES_FACE_NUM_PREFERENCES][11] = {
     "LT   grn  ",   // Light: green component
 #endif
     "LT   red  ",   // Light: red component
+    "CH        ",   // Hourly chime/signal tune
 };
 
 void preferences_face_setup(movement_settings_t *settings, uint8_t watch_face_index, void ** context_ptr) {
@@ -69,6 +70,7 @@ bool preferences_face_loop(movement_event_t event, movement_settings_t *settings
             *((uint8_t *)context) = current_page;
             break;
         case EVENT_ALARM_BUTTON_UP:
+	    movement_stop_alarm();	
             switch (current_page) {
                 case 0:
                     settings->bit.clock_mode_24h = !(settings->bit.clock_mode_24h);
@@ -91,6 +93,10 @@ bool preferences_face_loop(movement_event_t event, movement_settings_t *settings
                 case 6:
                     settings->bit.led_red_color = settings->bit.led_red_color + 1;
                     break;
+		case 7:
+		    settings->bit.signal_index = (settings->bit.signal_index + 1) % movement_custom_signal_count;
+	            movement_play_signal();
+		    break;
             }
             break;
         case EVENT_TIMEOUT:
@@ -176,6 +182,10 @@ bool preferences_face_loop(movement_event_t event, movement_settings_t *settings
                 sprintf(buf, "%2d", settings->bit.led_red_color);
                 watch_display_string(buf, 8);
                 break;
+            case 7:
+                sprintf(buf, "%2d", settings->bit.signal_index);
+                watch_display_string(buf, 8);
+                break;
         }
     }
 
@@ -195,5 +205,6 @@ void preferences_face_resign(movement_settings_t *settings, void *context) {
     (void) settings;
     (void) context;
     watch_set_led_off();
+    movement_stop_alarm();
     watch_store_backup_data(settings->reg, 0);
 }
