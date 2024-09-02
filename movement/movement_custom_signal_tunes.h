@@ -25,7 +25,7 @@
 #ifndef MOVEMENT_CUSTOM_SIGNAL_TUNES_H_
 #define MOVEMENT_CUSTOM_SIGNAL_TUNES_H_
 
-int8_t *signal_tunes[] = {
+const int8_t *signal_tunes[] = {
     default_beep_short,
     zelda_tune,
     mario_tune,

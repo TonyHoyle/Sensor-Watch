@@ -25,7 +25,7 @@
 #ifndef MOVEMENT_CUSTOM_ALARM_TUNES_H_
 #define MOVEMENT_CUSTOM_ALARM_TUNES_H_
 
-int8_t *alarm_tunes[] = {
+const int8_t *alarm_tunes[] = {
     default_beep_long,
     fur_elise_tune,
     bach_tune,

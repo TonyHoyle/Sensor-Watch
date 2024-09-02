@@ -25,14 +25,14 @@
 #ifndef MOVEMENT_CUSTOM_TUNES_H_
 #define MOVEMENT_CUSTOM_TUNES_H_
 
-int8_t default_beep_short[] = {
+const int8_t default_beep_short[] = {
     BUZZER_NOTE_C8, 5,
     BUZZER_NOTE_REST, 6,
     BUZZER_NOTE_C8, 5,
     0
 };
 
-int8_t default_beep_long[] = {
+const int8_t default_beep_long[] = {
     BUZZER_NOTE_C8, 5,
     BUZZER_NOTE_REST, 6,
     BUZZER_NOTE_C8, 5,
@@ -41,7 +41,7 @@ int8_t default_beep_long[] = {
     0
 };
 
-int8_t zelda_tune[] = {
+const int8_t zelda_tune[] = {
     BUZZER_NOTE_G5, 8,
     BUZZER_NOTE_F5SHARP_G5FLAT, 8,
     BUZZER_NOTE_D5SHARP_E5FLAT, 8,
@@ -53,7 +53,7 @@ int8_t zelda_tune[] = {
     0
 };
 
-int8_t mario_tune[] = {
+const int8_t mario_tune[] = {
     BUZZER_NOTE_E6, 7,
     BUZZER_NOTE_REST, 2,
     BUZZER_NOTE_E6, 7,
@@ -70,7 +70,7 @@ int8_t mario_tune[] = {
     0
 };
 
-int8_t kim_possible_tune[] = {
+const int8_t kim_possible_tune[] = {
     BUZZER_NOTE_G7, 6,
     BUZZER_NOTE_REST, 1,
     BUZZER_NOTE_G4, 3,
@@ -85,7 +85,7 @@ int8_t kim_possible_tune[] = {
     0
 };
 
-int8_t fur_elise_tune[] = {
+const int8_t fur_elise_tune[] = {
     BUZZER_NOTE_REST, 2,
     BUZZER_NOTE_E6, 13,
     BUZZER_NOTE_REST, 1,
@@ -200,7 +200,7 @@ int8_t fur_elise_tune[] = {
     0, // End of the song
 };
 
-int8_t bach_tune[] = {
+const int8_t bach_tune[] = {
     BUZZER_NOTE_E6, 13,
     BUZZER_NOTE_F6SHARP_G6FLAT, 13,
     BUZZER_NOTE_E6, 7,
@@ -254,7 +254,7 @@ int8_t bach_tune[] = {
     0, // End of the song
 };
 
-int8_t minuet_tune[] = {
+const int8_t minuet_tune[] = {
     BUZZER_NOTE_D6, 21,
     BUZZER_NOTE_G5, 10,
     BUZZER_NOTE_A5, 10,
@@ -295,7 +295,7 @@ int8_t minuet_tune[] = {
     0, // End of the song
 };
 
-int8_t mario_long[] = {
+const int8_t mario_long[] = {
     BUZZER_NOTE_G5, 13,
     BUZZER_NOTE_C5, 7,
     BUZZER_NOTE_E5, 13,
