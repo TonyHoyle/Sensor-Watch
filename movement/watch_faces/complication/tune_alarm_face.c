@@ -275,7 +275,6 @@ bool tune_alarm_loop(movement_event_t event, movement_settings_t *settings, void
     case EVENT_LIGHT_BUTTON_UP:
         if (!state->is_setting) {
             movement_illuminate_led();
-            _alarm_initiate_setting(settings, state, event.subsecond);
             break;
         }
         state->setting_state += 1;
@@ -289,12 +288,28 @@ bool tune_alarm_loop(movement_event_t event, movement_settings_t *settings, void
 	   movement_stop_alarm();
 	}
         break;
-    case EVENT_LIGHT_LONG_PRESS:
-        if (state->is_setting) {
-            _alarm_resume_setting(settings, state, event.subsecond);
-        } else {
+    case EVENT_ALARM_LONG_PRESS:
+        if (!state->is_setting) {
             _alarm_initiate_setting(settings, state, event.subsecond);
+        } else {
+            // handle the long press settings behaviour
+            switch (state->setting_state) {
+            case alarm_setting_idx_alarm:
+                // alarm selection
+                state->alarm_idx = 0;
+                break;
+            case alarm_setting_idx_minute:
+            case alarm_setting_idx_hour:
+	    case alarm_setting_idx_tune:
+                // initiate fast cycling for hour or minute settings
+                movement_request_tick_frequency(8);
+                state->alarm_quick_ticks = true;
+                break;
+            default:
+                break;
+            }
         }
+        _tune_alarm_draw(settings, state, event.subsecond);
         break;
     case EVENT_ALARM_BUTTON_UP:
         if (!state->is_setting) {
@@ -337,29 +352,14 @@ bool tune_alarm_loop(movement_event_t event, movement_settings_t *settings, void
         }
         _tune_alarm_draw(settings, state, event.subsecond);
         break;
-    case EVENT_ALARM_LONG_PRESS:
+    case EVENT_LIGHT_LONG_PRESS:
         if (!state->is_setting) {
             // toggle the enabled flag for current alarm
             state->alarm[state->alarm_idx].enabled ^= 1;
             // start wait ticks counter
             _wait_ticks = 0;
         } else {
-            // handle the long press settings behaviour
-            switch (state->setting_state) {
-            case alarm_setting_idx_alarm:
-                // alarm selection
-                state->alarm_idx = 0;
-                break;
-            case alarm_setting_idx_minute:
-            case alarm_setting_idx_hour:
-	    case alarm_setting_idx_tune:
-                // initiate fast cycling for hour or minute settings
-                movement_request_tick_frequency(8);
-                state->alarm_quick_ticks = true;
-                break;
-            default:
-                break;
-            }
+            _alarm_resume_setting(settings, state, event.subsecond);
         }
         _tune_alarm_draw(settings, state, event.subsecond);
         break;
