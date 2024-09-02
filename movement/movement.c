@@ -397,7 +397,7 @@ static void play_tune(int8_t *tune) {
 }
 
 void movement_play_signal(void) {
-    play_tune(alarm_tunes[movement_state.settings.bit.signal_index]);
+    play_tune(signal_tunes[movement_state.settings.bit.signal_index]);
 }
 
 void movement_play_alarm(void) {
