@@ -68,6 +68,11 @@ bool preferences_face_loop(movement_event_t event, movement_settings_t *settings
         case EVENT_LIGHT_BUTTON_DOWN:
             current_page = (current_page + 1) % PREFERENCES_FACE_NUM_PREFERENCES;
             *((uint8_t *)context) = current_page;
+            if (current_page == 7) {
+              movement_play_signal();
+            } else {
+              movement_stop_alarm();
+            }
             break;
         case EVENT_ALARM_BUTTON_UP:
 	    movement_stop_alarm();	
@@ -183,7 +188,7 @@ bool preferences_face_loop(movement_event_t event, movement_settings_t *settings
                 watch_display_string(buf, 8);
                 break;
             case 7:
-                sprintf(buf, "%2d", settings->bit.signal_index);
+                sprintf(buf, "%2d", settings->bit.signal_index+1);
                 watch_display_string(buf, 8);
                 break;
         }
