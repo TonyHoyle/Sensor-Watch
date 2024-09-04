@@ -49,6 +49,10 @@ const watch_face_t watch_faces[] = {
  */
 #define MOVEMENT_SECONDARY_FACE_INDEX (MOVEMENT_NUM_FACES - 2) // or (0)
 
+/* Determine the size of the custom tunes bank.  The full list is around 50 alarm tunes, taking
+ * about 5k of memory.  If memory becomes tight, medium provides a small selection in much less space.
+ */
+
 /* Determines the intensity of the led colors
  * Set a hex value 0-15 with 0x0 being off and 0xF being max intensity
  */
