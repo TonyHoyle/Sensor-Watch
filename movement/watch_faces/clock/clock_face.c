@@ -259,6 +259,9 @@ bool clock_face_loop(movement_event_t event, movement_settings_t *settings, void
             state->date_time.previous = current;
 
             break;
+	case EVENT_ALARM_UP:
+	    movement_stop_alarm();
+	    break;
         case EVENT_ALARM_LONG_PRESS:
             clock_toggle_time_signal(state);
             break;
