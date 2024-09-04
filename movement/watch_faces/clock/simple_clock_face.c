@@ -134,7 +134,7 @@ bool simple_clock_face_loop(movement_event_t event, movement_settings_t *setting
             // handle alarm indicator
             if (state->alarm_enabled != settings->bit.alarm_enabled) _update_alarm_indicator(settings->bit.alarm_enabled, state);
             break;
-	case EVENT_ALARM_UP:
+	case EVENT_ALARM_BUTTON_UP:
 	    movement_stop_alarm();
 	    break;
         case EVENT_ALARM_LONG_PRESS:

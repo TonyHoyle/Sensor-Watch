@@ -259,7 +259,7 @@ bool clock_face_loop(movement_event_t event, movement_settings_t *settings, void
             state->date_time.previous = current;
 
             break;
-	case EVENT_ALARM_UP:
+	case EVENT_ALARM_BUTTON_UP:
 	    movement_stop_alarm();
 	    break;
         case EVENT_ALARM_LONG_PRESS:
