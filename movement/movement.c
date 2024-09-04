@@ -386,14 +386,8 @@ static void play_tune(const int8_t *tune) {
     }
     movement_state.is_buzzing = true;
     watch_buzzer_play_sequence((int8_t *)tune, movement_state.maybe_disable_buzzer);
-    if (movement_state.le_mode_ticks == -1) {
-        // the watch is asleep. wake it up for "1" round through the main loop.
-        // the sleep_mode_app_loop will notice the is_buzzing and note that it
-        // only woke up to beep and then it will spinlock until the callback
-        // turns off the is_buzzing flag.
-        movement_state.needs_wake = true;
-        movement_state.le_mode_ticks = 1;
-    }
+    movement_request_wake();
+    _movement_enable_fast_tick_if_needed();
 }
 
 void movement_play_signal(void) {
@@ -419,11 +413,12 @@ void movement_play_alarm_beeps(uint8_t rounds, BuzzerNote alarm_note) {
 }
 
 void movement_stop_alarm(void) {
-    watch_buzzer_abort_sequence();
-
+    movement_state.alarm_ticks = -1;
     if(movement_state.is_buzzing) {
+        watch_buzzer_abort_sequence();
         movement_state.maybe_disable_buzzer();
     }
+    _movement_disable_fast_tick_if_possible();
 }
 
 uint8_t movement_claim_backup_register(void) {
